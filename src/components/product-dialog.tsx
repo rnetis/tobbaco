@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/lib/language-context";
+import { apiFetch } from "@/lib/api-client";
 import { formatMoney } from "@/lib/i18n";
 import { toast } from "sonner";
 import type { Product } from "@/lib/types";
@@ -40,12 +41,12 @@ export function ProductDialog({ open, onOpenChange, product }: ProductDialogProp
         amount: parseInt(amount, 10) || 0,
       };
       const res = product
-        ? await fetch(`/api/products/${product.id}`, {
+        ? await apiFetch(`/api/products/${product.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           })
-        : await fetch("/api/products", {
+        : await apiFetch("/api/products", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

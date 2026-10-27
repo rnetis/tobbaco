@@ -15,6 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/lib/language-context";
+import { apiFetch } from "@/lib/api-client";
 import { toast } from "sonner";
 import { FileUp } from "lucide-react";
 
@@ -32,7 +33,7 @@ export function ImportDialog({ open, onOpenChange }: ImportDialogProps) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch("/api/import", {
+      const res = await apiFetch("/api/import", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ csv, replace }),

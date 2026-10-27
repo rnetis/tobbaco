@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Download, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/language-context";
+import { isOfflineMode } from "@/lib/api-client";
 import { toast } from "sonner";
 
 type BeforeInstallPromptEvent = Event & {
@@ -14,9 +15,15 @@ type BeforeInstallPromptEvent = Event & {
 export function PwaRegister() {
   const { t } = useLanguage();
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
-  const [offline, setOffline] = useState(() => typeof window !== "undefined" && !navigator.onLine);
+  const [offline, setOffline] = useState(
+    () => typeof window !== "undefined" && !isOfflineMode() && !navigator.onLine
+  );
 
   useEffect(() => {
+    // Inside the APK the app is already installed and served from the bundle,
+    // so a service worker / install prompt would be meaningless.
+    if (isOfflineMode()) return;
+
     // Register service worker
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch((err) => {

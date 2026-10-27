@@ -13,6 +13,8 @@ import { RestockDialog } from "@/components/restock-dialog";
 import { SalesHistoryDialog } from "@/components/sales-history-dialog";
 import { ImportDialog } from "@/components/import-dialog";
 import { useLanguage } from "@/lib/language-context";
+import { apiFetch, isOfflineMode } from "@/lib/api-client";
+import { shareInventoryCsv } from "@/lib/share-csv";
 import type { Product } from "@/lib/types";
 import { LOW_STOCK_THRESHOLD } from "@/lib/types";
 import {
@@ -51,7 +53,7 @@ export default function Home() {
   const { data: products, isLoading } = useQuery<Product[]>({
     queryKey: ["products", search],
     queryFn: async () => {
-      const res = await fetch(`/api/products?q=${encodeURIComponent(search)}`);
+      const res = await apiFetch(`/api/products?q=${encodeURIComponent(search)}`);
       if (!res.ok) throw new Error("Failed to fetch products");
       return res.json();
     },
@@ -79,8 +81,13 @@ export default function Home() {
     setProductDialogOpen(true);
   };
 
-  const handleExport = () => {
-    window.location.href = "/api/export";
+  const handleExport = async () => {
+    if (isOfflineMode()) {
+      // Native/ offline build: no server to stream a file from — share or download the CSV
+      await shareInventoryCsv();
+    } else {
+      window.location.href = "/api/export";
+    }
     toast.success(t("exportDone"));
   };
 

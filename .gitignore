@@ -52,3 +52,17 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# android / capacitor build output
+/android/app/src/main/assets/public/
+/android/app/src/main/assets/capacitor.config.json
+/android/build/
+/android/app/build/
+/android/.idea/
+/android/local.properties
+/.gradle/
+
+# release signing material — never committed
+keystore.properties
+*.keystore
+*.jks

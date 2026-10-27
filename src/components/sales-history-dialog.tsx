@@ -11,6 +11,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLanguage } from "@/lib/language-context";
+import { apiFetch } from "@/lib/api-client";
 import { formatDateTime, formatMoney, formatNumber } from "@/lib/i18n";
 import { Receipt } from "lucide-react";
 import type { Sale } from "@/lib/types";
@@ -26,7 +27,7 @@ export function SalesHistoryDialog({ open, onOpenChange }: SalesHistoryDialogPro
   const { data: sales, isLoading } = useQuery<Sale[]>({
     queryKey: ["sales"],
     queryFn: async () => {
-      const res = await fetch("/api/sales?limit=100");
+      const res = await apiFetch("/api/sales?limit=100");
       if (!res.ok) throw new Error("Failed to fetch sales");
       return res.json();
     },

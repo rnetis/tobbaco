@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { buildInventoryCsv } from "@/lib/csv";
 
 // GET /api/export — download inventory as CSV (#,name,price,amount,amount sold)
 export async function GET() {
@@ -8,18 +9,8 @@ export async function GET() {
       orderBy: { createdAt: "asc" },
     });
 
-    const escape = (v: string | number) => {
-      const s = String(v);
-      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-    };
-
-    const lines = ["#,name,price,amount,amount sold"];
-    products.forEach((p, i) => {
-      lines.push(`${i + 1},${escape(p.name)},${p.price},${p.amount},${p.amountSold}`);
-    });
-
     // BOM so Excel opens UTF-8 (incl. Persian names) correctly
-    const csv = "\uFEFF" + lines.join("\n");
+    const csv = buildInventoryCsv(products);
 
     return new NextResponse(csv, {
       status: 200,

@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/lib/language-context";
+import { apiFetch } from "@/lib/api-client";
 import { formatMoney, formatNumber } from "@/lib/i18n";
 import { toast } from "sonner";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
@@ -36,7 +37,7 @@ export function SellDialog({ product, onOpenChange }: SellDialogProps) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch("/api/sales", {
+      const res = await apiFetch("/api/sales", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ productId: product!.id, quantity }),

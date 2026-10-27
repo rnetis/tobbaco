@@ -5,6 +5,7 @@ import { Boxes, Coins, ShoppingCart, TrendingUp, TriangleAlert } from "lucide-re
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLanguage } from "@/lib/language-context";
+import { apiFetch } from "@/lib/api-client";
 import { formatMoney, formatNumber } from "@/lib/i18n";
 
 type Stats = {
@@ -21,7 +22,7 @@ export function useStats() {
   return useQuery<Stats>({
     queryKey: ["stats"],
     queryFn: async () => {
-      const res = await fetch("/api/stats");
+      const res = await apiFetch("/api/stats");
       if (!res.ok) throw new Error("Failed to fetch stats");
       return res.json();
     },

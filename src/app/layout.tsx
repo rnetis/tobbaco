@@ -19,7 +19,8 @@ export const metadata: Metadata = {
   description:
     "Bilingual (Persian/English) inventory and sales management PWA. Manage stock, record sales, import/export CSV.",
   applicationName: "Inventory & Sales",
-  manifest: "/manifest.webmanifest",
+  // The APK ships a static export without the PWA manifest route (see next.config.ts)
+  manifest: process.env.NEXT_OUTPUT === "export" ? undefined : "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

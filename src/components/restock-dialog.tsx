@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/lib/language-context";
+import { apiFetch } from "@/lib/api-client";
 import { formatNumber } from "@/lib/i18n";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
@@ -34,7 +35,7 @@ export function RestockDialog({ product, onOpenChange }: RestockDialogProps) {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch(`/api/products/${product!.id}`, {
+      const res = await apiFetch(`/api/products/${product!.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ addAmount }),

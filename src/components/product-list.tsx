@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLanguage } from "@/lib/language-context";
+import { apiFetch } from "@/lib/api-client";
 import { formatMoney, formatNumber } from "@/lib/i18n";
 import { LOW_STOCK_THRESHOLD, type Product } from "@/lib/types";
 import { toast } from "sonner";
@@ -51,7 +52,7 @@ export function ProductList({ products, isLoading, onSell, onEdit, onRestock }: 
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+      const res = await apiFetch(`/api/products/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("failed");
     },
     onSuccess: () => {
