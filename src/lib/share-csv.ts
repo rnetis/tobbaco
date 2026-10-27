@@ -1,4 +1,4 @@
-import { getInventoryCsv } from "@/lib/local-db";
+import { getInventoryCsv } from "@/lib/device-db";
 
 /**
  * Export the inventory when there is no server to hit.

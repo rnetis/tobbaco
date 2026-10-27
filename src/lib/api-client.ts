@@ -1,5 +1,5 @@
 import { Capacitor } from "@capacitor/core";
-import { handleLocalRequest } from "@/lib/local-db";
+import { handleLocalRequest } from "@/lib/device-db";
 
 /**
  * Single entry point for every API call.
